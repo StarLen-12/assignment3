@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LENN WORLD</title>
+  <link rel="shortcut icon" href="logo.svg" type="image/x-icon">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  background: 
+    linear-gradient(to right top, rgba(223, 233, 243, 0.5), rgba(255, 255, 255, 0.6)),
+    url('https://images6.alphacoders.com/395/395453.jpg') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+  .wrapper {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 35px 45px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .wrapper:hover {
+    transform: scale(1.01);
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 2px solid #dcdcdc;
+    border-radius: 10px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.25s ease-in-out;
+  }
+
+  input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+    outline: none;
+    background: #fff;
+  }
+
+  #submit {
+    width: 100%;
+    background: linear-gradient(135deg, #4a90e2, #007aff);
+    color: white;
+    font-size: 18px;
+    padding: 14px 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  #submit:hover {
+    background: linear-gradient(135deg, #357abd, #0066cc);
+    transform: translateY(-2px);
+  }
+
+  #togglePass {
+    margin-top: -15px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    color: #007aff;
+    text-align: right;
+    font-size: 14px;
+    user-select: none;
+    transition: color 0.3s ease;
+  }
+
+  #togglePass:hover {
+    color: #0051b0;
+  }
+
+  .message {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 15px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .error {
+    background-color: #ffe0e0;
+    color: #c0392b;
+    border-left: 4px solid #c0392b;
+  }
+
+  .success {
+    background-color: #e0ffe0;
+    color: #2e7d32;
+    border-left: 4px solid #2e7d32;
+  }
+</style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <div class="formelment">
+      <label for="Email">Email:</label>
+      <input type="email" id="email" name="email">
+    </div>
+
+    <div class="formelement">
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" name="phone">
+    </div>
+
+    <div class="formelement">
+      <label for="pass">Password:</label>
+      <input type="password" id="pass" name="password">
+      <div id="togglePass">Show Password</div>
+    </div>
+
+    <div class="formelement">
+      <label for="cpass">Confirm password:</label>
+      <input type="password" id="cpass" name="confirm password">
+    </div>
+
+    <input type="submit" id="submit" value="Submit">
+    <div id="messageBox"></div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      function isEmail(email) {
+        var regex = /^([a-zA-Z0-9_.+-])+@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+      }
+
+      function isValidPassword(pass) {
+        return /^(?=.[a-z])(?=.[A-Z])(?=.*\\d).{8,}$/.test(pass);
+      }
+
+      $("#togglePass").click(function () {
+        const passInput = $("#pass");
+        const type = passInput.attr("type") === "password" ? "text" : "password";
+        passInput.attr("type", type);
+        $(this).text(type === "password" ? "Show Password" : "Hide Password");
+      });
+
+      $("#submit").click(function (event) {
+        event.preventDefault();
+        let errorMessage = "";
+        let missingField = "";
+
+        const email = $("#email").val().trim();
+        const phone = $("#phone").val().trim();
+        const pass = $("#pass").val().trim();
+        const cpass = $("#cpass").val().trim();
+
+        if (email === "") missingField += "<p>Email is required.</p>";
+        if (phone === "") missingField += "<p>Phone number is required.</p>";
+        if (pass === "") missingField += "<p>Password is required.</p>";
+        if (cpass === "") missingField += "<p>Confirm Password is required.</p>";
+
+        if (missingField !== "") errorMessage += "<h4>Missing Fields:</h4>" + missingField;
+
+        if (email !== "" && !isEmail(email)) errorMessage += "<p>Invalid email format.</p>";
+        if (phone !== "" && (!$.isNumeric(phone) || phone.length !== 10)) errorMessage += "<p>Phone must be exactly 10 digits.</p>";
+        if (pass !== "" && !isValidPassword(pass)) errorMessage += "<p>Password must be 8+ chars, include uppercase, lowercase, and a number.</p>";
+        if (pass !== "" && cpass !== "" && pass !== cpass) errorMessage += "<p>Passwords do not match.</p>";
+
+        const messageBox = $("#messageBox");
+
+        if (errorMessage !== "") {
+          messageBox.html(errorMessage).removeClass("success").addClass("message error");
+        } else {
+          messageBox.html("<p>Form submitted successfully!</p>").removeClass("error").addClass("message success");
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
