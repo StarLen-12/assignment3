@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LENN WORLD</title>
+  <link rel="shortcut icon" href="logo.svg" type="image/x-icon">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .wrapper {
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #00e6e6;
+    }
+
+    .formelement {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    label {
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    input[type="text"] {
+      padding: 12px;
+      padding-right: 40px; /* space for eye icon */
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      box-shadow: 0 0 10px #00e6e6;
+    }
+
+    #submit {
+      background-color: #00e6e6;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    #submit:hover {
+      background-color: #01cccc;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 39px;
+      cursor: pointer;
+      color: #ccc;
+      user-select: none;
+      font-size: 18px;
+    }
+
+    @media (max-width: 600px) {
+      .wrapper {
+        padding: 25px;
+      }
+
+      input {
+        font-size: 14px;
+      }
+
+      label {
+        font-size: 16px;
+      }
+
+      .toggle-password {
+        top: 36px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h2>LENN WORLD - Register</h2>
+
+    <div class="formelement">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required placeholder="Enter your email">
+    </div>
+
+    <div class="formelement">
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" maxlength="10" inputmode="numeric" required placeholder="10-digit phone number">
+    </div>
+
+    <div class="formelement">
+      <label for="pass">Password</label>
+      <input type="password" id="pass" name="password" required placeholder="Enter password">
+      <span class="toggle-password" onclick="togglePassword('pass')">👁</span>
+    </div>
+
+    <div class="formelement">
+      <label for="cpass">Confirm Password</label>
+      <input type="password" id="cpass" name="confirm password" required placeholder="Confirm password">
+      <span class="toggle-password" onclick="togglePassword('cpass')">👁</span>
+    </div>
+
+    <input type="submit" id="submit" value="Register">
+  </div>
+
+  <script>
+    function togglePassword(id) {
+      const field = document.getElementById(id);
+      const currentType = field.getAttribute("type");
+      field.setAttribute("type", currentType === "password" ? "text" : "password");
+    }
+
+    $("#submit").click(function (e) {
+      e.preventDefault();
+      const phone = $("#phone").val();
+      const phonePattern = /^[0-9]{10}$/;
+
+      if (!phonePattern.test(phone)) {
+        alert("Please enter a valid 10-digit phone number.");
+        return;
+      }
+
+      alert("Form submitted successfully!");
+    });
+
+    $("#phone").on("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+    });
+  </script>
+</body>
+</html>
